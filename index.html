@@ -11,6 +11,7 @@
             color: #333;
             padding: 20px;
             margin: 0;
+            overflow-x: hidden;
         }
 
         h1 {
@@ -27,95 +28,194 @@
         }
 
         .ipa-container {
-            max-width: 1120px;
+            max-width: 1200px; 
             margin: 0 auto;
             background: #fff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative; 
         }
 
-        /* 专门用于长短音配对的容器 */
+        /* 专门用于长短音配对的容器 (实现两端对齐的核心) */
         .ipa-pair-container {
             display: flex;
-            flex-wrap: wrap; /* 允许换行 */
-            justify-content: flex-start;
-            gap: 20px; /* 控制大组之间的间隔 */
+            flex-wrap: wrap; 
+            justify-content: space-between; 
+            gap: 20px 0; 
             padding: 10px 0;
+            box-sizing: border-box;
         }
 
         /* 长短音配对组的样式 */
-        .ipa-pair-group {
+        .ipa-pair-group, .ipa-independent {
             display: flex;
             flex-direction: column;
-            gap: 5px; /* 控制长短音之间的间隔 */
+            gap: 5px; 
             align-items: center;
             border: 1px solid #e0e0e0;
             padding: 10px;
             border-radius: 8px;
-            min-width: 100px;
-            flex-grow: 0;
-            max-width: 150px;
+            width: 150px; 
+            box-sizing: border-box;
         }
 
-        /* 独立音的容器，保持与其他组一致的外观 */
-        .ipa-independent {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #e0e0e0;
-            padding: 10px;
-            border-radius: 8px;
-            min-width: 100px;
-            flex-grow: 0;
-            max-width: 150px;
-        }
-        
-        /* 双元音和辅音的通用网格布局 */
+        /* 双元音和辅音的网格布局 (实现均匀等分) */
         .ipa-group {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); 
             gap: 15px;
             padding: 10px 0;
         }
 
-
         .ipa-symbol {
+            position: relative; 
             border-radius: 6px;
-            padding: 12px;
+            padding: 12px 12px 5px 12px;
             text-align: center;
             font-size: 32px;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid #dee2e6;
-            width: 100%; /* 确保在容器内占据完整宽度 */
-            box-sizing: border-box; /* 确保 padding 不增加总宽度 */
+            width: 100%; 
+            box-sizing: border-box;
+            display: flex; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: visible; 
         }
-
+        
         .ipa-symbol:hover {
             transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
         }
 
-        /* --- 元音颜色区分 (RP) --- */
+        /* 音标符号本身 */
+        .phoneme {
+            margin-bottom: 5px; 
+            z-index: 10;
+        }
+        
+        /* 示例单词样式 */
+        .example-word {
+            font-size: 14px;
+            font-weight: normal;
+            opacity: 0.8;
+            padding: 0 0 5px 0;
+            line-height: 1; 
+            z-index: 10;
+        }
+        
+        /* 复制按钮样式 (左下角图标) */
+        .copy-button {
+            position: absolute;
+            bottom: 0px; 
+            left: 0px; 
+            width: 24px; 
+            height: 24px; 
+            background: rgba(0, 0, 0, 0.6); 
+            color: white;
+            font-size: 14px; 
+            line-height: 24px; 
+            text-align: center;
+            border-top-right-radius: 6px; 
+            opacity: 0; 
+            transform: scale(0.8); 
+            transition: opacity 0.2s, transform 0.2s, background-color 0.2s;
+            z-index: 20; 
+            cursor: pointer; 
+        }
+        
+        /* 鼠标悬停时显示复制按钮 */
+        .ipa-symbol:hover .copy-button {
+            opacity: 1;
+            transform: scale(1); 
+        }
+        
+        .copy-success {
+            background: #28a745 !important; 
+            pointer-events: none; 
+        }
 
-        /* 长元音 */
+        /* --- 颜色区分 (RP) --- */
         .long-vowel { background-color: #d4edda; color: #155724; }
-        /* 短元音 */
         .short-vowel { background-color: #fcece3; color: #9c5c37; }
-        /* 双元音 */
         .diphthong { background-color: #fff3cd; color: #856404; }
-        /* 施瓦音 (弱读核心) */
         .schwa { background-color: #f8d7da; color: #721c24; }
         
-        /* --- 辅音颜色区分 (清浊分离) --- */
-        
-        /* 清辅音 */
         .voiceless { background-color: #cce5ff; color: #004085; }
-        /* 浊辅音 */
         .voiced { background-color: #d1ecf1; color: #0c5460; }
+
+        .phonetic {
+            font-weight: bold;
+        }
+
+        /* --- 浮动视觉面板样式 --- */
+        #floating-visual-panel {
+            position: absolute; 
+            max-width: 380px; /* 适应单图或双图 */
+            padding: 10px;
+            background-color: #343a40; 
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            pointer-events: none; 
+            transition: opacity 0.2s, transform 0.2s;
+            opacity: 0;
+            visibility: hidden; 
+            z-index: 100; 
+        }
+
+        #panel-phoneme {
+            text-align: center;
+            font-size: 28px;
+            color: #ffc107; 
+            margin: 0 0 10px 0;
+        }
+        
+        .visual-images {
+            display: flex;
+            justify-content: center; /* 确保单张图片居中 */
+            gap: 8px;
+        }
+        
+        .visual-item {
+            /* flex: 1; 只有双图时才启用，否则单张图片会撑满 */
+            text-align: center;
+        }
+        
+        .visual-item.single-image {
+             flex: 0 0 auto; /* 单图时不拉伸 */
+             max-width: 200px;
+        }
+
+        .visual-item p {
+            font-size: 12px;
+            font-weight: bold;
+            color: #bdc3c7;
+            margin: 0 0 5px 0;
+        }
+        
+        .visual-images img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            display: block;
+            background-color: white; 
+            /* 确保双图时每张图片尺寸固定，以防止面板抖动 */
+            min-width: 95px;
+            max-width: 180px; 
+        }
+
+        .image-source-hint {
+            font-size: 11px;
+            text-align: center;
+            margin-top: 10px;
+            opacity: 0.6;
+            word-wrap: break-word; 
+        }
     </style>
 </head>
 <body>
@@ -124,130 +224,482 @@
 
         <h1>🎙️ RP 英语音标表 (Received Pronunciation)</h1>
         
+        <!-- ==================== 单元音部分 (Monophthongs - 双图) ==================== -->
         <h2>单元音 (Monophthongs)</h2>
         
         <div class="ipa-pair-container">
             
             <div class="ipa-pair-group">
-                <div class="ipa-symbol long-vowel" data-audio="i-long.mp3">iː</div>
-                <div class="ipa-symbol short-vowel" data-audio="i-short.mp3">ɪ</div>
+                <div class="ipa-symbol long-vowel" data-audio="i-long.mp3" data-mouth-image="i-long-m.png" data-tongue-image="i-long-t.png">
+                    <span class="phoneme">iː</span>
+                    <span class="example-word">b<span class="phonetic">ea</span>n</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
+                <div class="ipa-symbol short-vowel" data-audio="i-short.mp3" data-mouth-image="i-short-m.png" data-tongue-image="i-short-t.png">
+                    <span class="phoneme">ɪ</span>
+                    <span class="example-word">t<span class="phonetic">i</span>p</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
             </div>
             
             <div class="ipa-pair-group">
-                <div class="ipa-symbol long-vowel" data-audio="u-long.mp3">uː</div>
-                <div class="ipa-symbol short-vowel" data-audio="u-short.mp3">ʊ</div>
+                <div class="ipa-symbol long-vowel" data-audio="u-long.mp3" data-mouth-image="u-long-m.png" data-tongue-image="u-long-t.png">
+                    <span class="phoneme">uː</span>
+                    <span class="example-word">m<span class="phonetic">oo</span>n</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
+                <div class="ipa-symbol short-vowel" data-audio="u-short.mp3" data-mouth-image="u-short-m.png" data-tongue-image="u-short-t.png">
+                    <span class="phoneme">ʊ</span>
+                    <span class="example-word">sh<span class="phonetic">oo</span>k</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
             </div>
             
             <div class="ipa-pair-group">
-                <div class="ipa-symbol long-vowel" data-audio="a-long.mp3">ɑː</div>
-                <div class="ipa-symbol short-vowel" data-audio="u-short-up.mp3">ʌ</div>
+                <div class="ipa-symbol long-vowel" data-audio="a-long.mp3" data-mouth-image="a-long-m.png" data-tongue-image="a-long-t.png">
+                    <span class="phoneme">ɑː</span>
+                    <span class="example-word">c<span class="phonetic">ar</span>d</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
+                <div class="ipa-symbol short-vowel" data-audio="u-short-up.mp3" data-mouth-image="u-short-up-m.png" data-tongue-image="u-short-up-t.png">
+                    <span class="phoneme">ʌ</span>
+                    <span class="example-word">f<span class="phonetic">u</span>n</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
             </div>
 
             <div class="ipa-pair-group">
-                <div class="ipa-symbol long-vowel" data-audio="o-long.mp3">ɔː</div>
-                <div class="ipa-symbol short-vowel" data-audio="o-short.mp3">ɒ</div>
+                <div class="ipa-symbol long-vowel" data-audio="o-long.mp3" data-mouth-image="o-long-m.png" data-tongue-image="o-long-t.png">
+                    <span class="phoneme">ɔː</span>
+                    <span class="example-word">sh<span class="phonetic">or</span>e</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
+                <div class="ipa-symbol short-vowel" data-audio="o-short.mp3" data-mouth-image="o-short-m.png" data-tongue-image="o-short-t.png">
+                    <span class="phoneme">ɒ</span>
+                    <span class="example-word">l<span class="phonetic">o</span>ck</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
             </div>
             
             <div class="ipa-pair-group">
-                <div class="ipa-symbol long-vowel" data-audio="er-long.mp3">ɜː</div>
-                <div class="ipa-symbol schwa" data-audio="schwa.mp3">ə</div>
+                <div class="ipa-symbol long-vowel" data-audio="er-long.mp3" data-mouth-image="er-long-m.png" data-tongue-image="er-long-t.png">
+                    <span class="phoneme">ɜː</span>
+                    <span class="example-word">s<span class="phonetic">ir</span></span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
+                <div class="ipa-symbol schwa" data-audio="schwa.mp3" data-mouth-image="er-long-m.png" data-tongue-image="er-long-t.png">
+                    <span class="phoneme">ə</span>
+                    <span class="example-word">th<span class="phonetic">e</span></span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
             </div>
             
             <div class="ipa-independent">
-                <div class="ipa-symbol short-vowel" data-audio="e-short.mp3">ɛ</div>
+                <div class="ipa-symbol short-vowel" data-audio="e-short.mp3" data-mouth-image="e-short-m.png" data-tongue-image="e-short-t.png">
+                    <span class="phoneme">ɛ</span>
+                    <span class="example-word">m<span class="phonetic">e</span>t</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
             </div>
 
             <div class="ipa-independent">
-                <div class="ipa-symbol short-vowel" data-audio="a-short.mp3">æ</div>
+                <div class="ipa-symbol short-vowel" data-audio="a-short.mp3" data-mouth-image="a-short-m.png" data-tongue-image="a-short-t.png">
+                    <span class="phoneme">æ</span>
+                    <span class="example-word">p<span class="phonetic">a</span>n</span>
+                    <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+                </div>
             </div>
 
         </div>
         
         <hr>
+        
+        <!-- ==================== 双元音部分 (Diphthongs - 单图) ==================== -->
         
         <h2>双元音 (Diphthongs)</h2>
         <div class="ipa-group">
-            <div class="ipa-symbol diphthong" data-audio="ei.mp3">eɪ</div>
-            <div class="ipa-symbol diphthong" data-audio="ai.mp3">aɪ</div>
-            <div class="ipa-symbol diphthong" data-audio="oi.mp3">ɔɪ</div>
-            <div class="ipa-symbol diphthong" data-audio="ou.mp3">əʊ</div>
-            <div class="ipa-symbol diphthong" data-audio="au.mp3">aʊ</div>
-            <div class="ipa-symbol diphthong" data-audio="ie.mp3">ɪə</div>
-            <div class="ipa-symbol diphthong" data-audio="ea.mp3">eə</div>
-            <div class="ipa-symbol diphthong" data-audio="ue.mp3">ʊə</div>
+            <!-- 统一使用 data-image 属性 -->
+            <div class="ipa-symbol diphthong" data-audio="ei.mp3" data-image="ei.gif">
+                <span class="phoneme">eɪ</span>
+                <span class="example-word">s<span class="phonetic">a</span>me</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol diphthong" data-audio="ai.mp3" data-image="ai.gif">
+                <span class="phoneme">aɪ</span>
+                <span class="example-word">h<span class="phonetic">i</span>de</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol diphthong" data-audio="oi.mp3" data-image="oi.gif">
+                <span class="phoneme">ɔɪ</span>
+                <span class="example-word">ch<span class="phonetic">oi</span>ce</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol diphthong" data-audio="ou.mp3" data-image="ou.gif">
+                <span class="phoneme">əʊ</span>
+                <span class="example-word">g<span class="phonetic">o</span></span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol diphthong" data-audio="au.mp3" data-image="au.gif">
+                <span class="phoneme">aʊ</span>
+                <span class="example-word">l<span class="phonetic">ou</span>d</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol diphthong" data-audio="ie.mp3" data-image="ie.gif">
+                <span class="phoneme">ɪə</span>
+                <span class="example-word">d<span class="phonetic">ear</span></span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol diphthong" data-audio="ea.mp3" data-image="ea.gif">
+                <span class="phoneme">eə</span>
+                <span class="example-word">h<span class="phonetic">air</span></span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol diphthong" data-audio="ue.mp3" data-image="ue.gif">
+                <span class="phoneme">ʊə</span>
+                <span class="example-word">c<span class="phonetic">ur</span>ious</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
         </div>
         
         <hr>
+        
+        <!-- ==================== 辅音部分 (Consonants - 单图) ==================== -->
         
         <h2>辅音 (Consonants)</h2>
         
         <h3>清辅音 (Voiceless Consonants)</h3>
         <div class="ipa-group">
-            <div class="ipa-symbol voiceless" data-audio="p.mp3">p</div>
-            <div class="ipa-symbol voiceless" data-audio="t.mp3">t</div>
-            <div class="ipa-symbol voiceless" data-audio="k.mp3">k</div>
-            <div class="ipa-symbol voiceless" data-audio="f.mp3">f</div>
-            <div class="ipa-symbol voiceless" data-audio="theta.mp3">θ</div>
-            <div class="ipa-symbol voiceless" data-audio="s.mp3">s</div>
-            <div class="ipa-symbol voiceless" data-audio="sh.mp3">ʃ</div>
-            <div class="ipa-symbol voiceless" data-audio="h.mp3">h</div>
-            <div class="ipa-symbol voiceless" data-audio="ch.mp3">tʃ</div>
+            <div class="ipa-symbol voiceless" data-audio="p.mp3" data-image="p.png">
+                <span class="phoneme">p</span>
+                <span class="example-word"><span class="phonetic">p</span>ick</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiceless" data-audio="t.mp3" data-image="t.png">
+                <span class="phoneme">t</span>
+                <span class="example-word"><span class="phonetic">t</span>eam</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiceless" data-audio="k.mp3" data-image="k.png">
+                <span class="phoneme">k</span>
+                <span class="example-word"><span class="phonetic">c</span>ode</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiceless" data-audio="f.mp3" data-image="f.png">
+                <span class="phoneme">f</span>
+                <span class="example-word"><span class="phonetic">f</span>irst</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiceless" data-audio="theta.mp3" data-image="theta.png">
+                <span class="phoneme">θ</span>
+                <span class="example-word"><span class="phonetic">th</span>ick</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiceless" data-audio="s.mp3" data-image="s.png">
+                <span class="phoneme">s</span>
+                <span class="example-word"><span class="phonetic">s</span>aw</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiceless" data-audio="sh.mp3" data-image="sh.png">
+                <span class="phoneme">ʃ</span>
+                <span class="example-word"><span class="phonetic">sh</span>e</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiceless" data-audio="h.mp3" data-image="h.png">
+                <span class="phoneme">h</span>
+                <span class="example-word"><span class="phonetic">h</span>ard</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiceless" data-audio="ch.mp3" data-image="ch.png">
+                <span class="phoneme">tʃ</span>
+                <span class="example-word"><span class="phonetic">ch</span>oose</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
         </div>
         
         <h3>浊辅音 (Voiced Consonants)</h3>
         <div class="ipa-group">
-            <div class="ipa-symbol voiced" data-audio="b.mp3">b</div>
-            <div class="ipa-symbol voiced" data-audio="d.mp3">d</div>
-            <div class="ipa-symbol voiced" data-audio="g.mp3">g</div>
-            <div class="ipa-symbol voiced" data-audio="v.mp3">v</div>
-            <div class="ipa-symbol voiced" data-audio="eth.mp3">ð</div>
-            <div class="ipa-symbol voiced" data-audio="z.mp3">z</div>
-            <div class="ipa-symbol voiced" data-audio="zh.mp3">ʒ</div>
-            <div class="ipa-symbol voiced" data-audio="j-affricate.mp3">dʒ</div>
-            <div class="ipa-symbol voiced" data-audio="m.mp3">m</div>
-            <div class="ipa-symbol voiced" data-audio="n.mp3">n</div>
-            <div class="ipa-symbol voiced" data-audio="ng.mp3">ŋ</div>
-            <div class="ipa-symbol voiced" data-audio="l.mp3">l</div>
-            <div class="ipa-symbol voiced" data-audio="r.mp3">r</div> 
-            <div class="ipa-symbol voiced" data-audio="w.mp3">w</div>
-            <div class="ipa-symbol voiced" data-audio="y.mp3">j</div>
+            <div class="ipa-symbol voiced" data-audio="b.mp3" data-image="b.png">
+                <span class="phoneme">b</span>
+                <span class="example-word"><span class="phonetic">b</span>ed</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="d.mp3" data-image="d.png">
+                <span class="phoneme">d</span>
+                <span class="example-word"><span class="phonetic">d</span>ine</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="g.mp3" data-image="g.png">
+                <span class="phoneme">g</span>
+                <span class="example-word"><span class="phonetic">g</span>et</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="v.mp3" data-image="v.png">
+                <span class="phoneme">v</span>
+                <span class="example-word"><span class="phonetic">v</span>an</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="eth.mp3" data-image="eth.png">
+                <span class="phoneme">ð</span>
+                <span class="example-word"><span class="phonetic">th</span>ese</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="z.mp3" data-image="z.png">
+                <span class="phoneme">z</span>
+                <span class="example-word"><span class="phonetic">z</span>en</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="zh.mp3" data-image="zh.png">
+                <span class="phoneme">ʒ</span>
+                <span class="example-word">ca<span class="phonetic">s</span>ual</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="j-affricate.mp3" data-image="j-affricate.png">
+                <span class="phoneme">dʒ</span>
+                <span class="example-word"><span class="phonetic">j</span>et</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="m.mp3" data-image="m.png">
+                <span class="phoneme">m</span>
+                <span class="example-word"><span class="phonetic">m</span>ode</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="n.mp3" data-image="n.png">
+                <span class="phoneme">n</span>
+                <span class="example-word"><span class="phonetic">n</span>eck</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="ng.mp3" data-image="ng.png">
+                <span class="phoneme">ŋ</span>
+                <span class="example-word">so<span class="phonetic">ng</span></span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="l.mp3" data-image="l.png">
+                <span class="phoneme">l</span>
+                <span class="example-word"><span class="phonetic">l</span>ook</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="r.mp3" data-image="r.png">
+                <span class="phoneme">r</span>
+                <span class="example-word"><span class="phonetic">r</span>ug</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div> 
+            <div class="ipa-symbol voiced" data-audio="w.mp3" data-image="w.png">
+                <span class="phoneme">w</span>
+                <span class="example-word"><span class="phonetic">w</span>atch</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
+            <div class="ipa-symbol voiced" data-audio="y.mp3" data-image="j.png">
+                <span class="phoneme">j</span>
+                <span class="example-word"><span class="phonetic">y</span>et</span>
+                <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
+            </div>
         </div>
+    </div>
 
-        <script>
-            // 假设您的MP3文件都放在名为 'audio/' 的文件夹中
-            const AUDIO_PATH = './audio/'; 
+    <!-- 浮动视觉面板 -->
+    <div id="floating-visual-panel">
+        <h4 id="panel-phoneme"></h4>
+        <div class="visual-images">
+            <!-- 嘴形/发音图容器 -->
+            <div class="visual-item" id="visual-item-mouth">
+                <p id="item-1-title">嘴形图</p>
+                <img id="panel-mouth-img" src="" alt="发音图" onerror="this.onerror=null; this.src='https://placehold.co/100x75/555555/FFFFFF?text=Image+N/A'">
+            </div>
+            <!-- 舌位图容器 -->
+            <div class="visual-item" id="visual-item-tongue">
+                <p id="item-2-title">舌位图</p>
+                <img id="panel-tongue-img" src="" alt="舌位图" onerror="this.onerror=null; this.src='https://placehold.co/100x75/555555/FFFFFF?text=Image+N/A'">
+            </div>
+        </div>
+        <p class="image-source-hint">(文件路径提示)</p>
+    </div>
 
-            // 获取所有带有 'ipa-symbol' 类的元素
-            const ipaSounds = document.querySelectorAll('.ipa-symbol');
 
-            // 预加载 Audio 对象，以避免点击延迟
-            let currentAudio = null;
+    <script>
+        const AUDIO_PATH = './audio/'; 
+        const IMAGE_PATH = './image/'; 
+        
+        const ipaSymbols = document.querySelectorAll('.ipa-symbol');
+        
+        const floatingVisualPanel = document.getElementById('floating-visual-panel');
+        const panelPhoneme = document.getElementById('panel-phoneme');
+        
+        // 获取两个独立的图片容器及标题元素
+        const visualItemMouth = document.getElementById('visual-item-mouth');
+        const visualItemTongue = document.getElementById('visual-item-tongue');
+        const panelMouthImg = document.getElementById('panel-mouth-img');
+        const panelTongueImg = document.getElementById('panel-tongue-img');
+        const item1Title = document.getElementById('item-1-title');
+        const item2Title = document.getElementById('item-2-title');
 
-            ipaSounds.forEach(symbol => {
-                symbol.addEventListener('click', function() {
-                    // 获取这个音标对应的文件名
-                    const fileName = this.getAttribute('data-audio');
+        const imageSourceHint = document.querySelector('.image-source-hint');
+
+        let currentAudio = null;
+
+        // --- 视觉面板显示和定位逻辑 (mouseenter/mouseleave) ---
+        ipaSymbols.forEach(symbol => {
+            
+            // 1. 鼠标进入事件 (显示并定位面板)
+            symbol.addEventListener('mouseenter', function() {
+                const ipaText = this.querySelector('.phoneme').textContent.trim();
+                
+                // 尝试获取三种数据属性
+                const mouthFileName = this.getAttribute('data-mouth-image');
+                const tongueFileName = this.getAttribute('data-tongue-image');
+                const singleFileName = this.getAttribute('data-image'); // 用于双元音和辅音
+
+                // 确定图片模式 (单图或双图)
+                let mode = 'none';
+                if (mouthFileName && tongueFileName) {
+                    mode = 'dual'; // 单元音
+                } else if (singleFileName) {
+                    mode = 'single'; // 双元音和辅音
+                }
+
+                if (mode === 'none') {
+                    floatingVisualPanel.style.opacity = 0;
+                    floatingVisualPanel.style.visibility = 'hidden';
+                    return;
+                }
+
+                // 更新面板音标
+                panelPhoneme.textContent = ipaText;
+
+                if (mode === 'dual') {
+                    // **双图模式 (单元音)**
+                    panelMouthImg.src = IMAGE_PATH + mouthFileName;
+                    panelTongueImg.src = IMAGE_PATH + tongueFileName;
                     
-                    if (fileName) {
-                        const audioFile = AUDIO_PATH + fileName;
-                        
-                        // 停止任何正在播放的音频 (防止叠加)
-                        if (currentAudio) {
-                            currentAudio.pause();
-                            currentAudio.currentTime = 0; // 重置到开头
-                        }
+                    item1Title.textContent = '嘴形图';
+                    item2Title.textContent = '舌位图';
+                    
+                    // 显示两个容器
+                    visualItemMouth.style.display = 'block';
+                    visualItemTongue.style.display = 'block';
+                    
+                    // 重置宽度，让 Flex 布局生效
+                    visualItemMouth.classList.remove('single-image');
 
-                        // 创建新的 Audio 对象并播放
-                        currentAudio = new Audio(audioFile);
-                        currentAudio.play().catch(error => {
-                            console.error("Audio playback failed:", error);
-                            // 在控制台提示音频可能未找到
-                        });
-                    }
-                });
+                    imageSourceHint.textContent = `(嘴形: ${mouthFileName} | 舌位: ${tongueFileName})`;
+
+                } else if (mode === 'single') {
+                    // **单图模式 (双元音和辅音)**
+                    panelMouthImg.src = IMAGE_PATH + singleFileName;
+                    panelTongueImg.src = ''; // 清除第二张图的源，确保它不显示旧图
+                    
+                    item1Title.textContent = '发音图'; 
+                    
+                    // 显示第一个容器，并设置样式以适应单图居中
+                    visualItemMouth.style.display = 'block';
+                    visualItemMouth.classList.add('single-image'); // 添加一个类来控制单图宽度
+                    
+                    // 隐藏第二个容器
+                    visualItemTongue.style.display = 'none'; 
+                    
+                    imageSourceHint.textContent = `(发音图: ${singleFileName})`;
+                }
+
+
+                // --- 定位逻辑：显示在音标卡片右侧 ---
+                const rect = this.getBoundingClientRect();
+                
+                const panelWidth = floatingVisualPanel.offsetWidth;
+                const panelHeight = floatingVisualPanel.offsetHeight;
+                const margin = 15; 
+
+                let targetX = rect.right + margin + window.scrollX;
+                let targetY = rect.top + window.scrollY + (rect.height / 2) - (panelHeight / 2);
+
+                // 边界检查：防止面板超出屏幕右侧
+                if (targetX + panelWidth > window.innerWidth) {
+                    // 如果右侧空间不足，显示在左侧
+                    targetX = rect.left - panelWidth - margin + window.scrollX;
+                }
+                
+                // 边界检查：防止面板超出屏幕顶部或底部
+                if (targetY < window.scrollY) {
+                    targetY = window.scrollY;
+                } else if (targetY + panelHeight > window.scrollY + window.innerHeight) {
+                    targetY = window.scrollY + window.innerHeight - panelHeight;
+                }
+                
+                floatingVisualPanel.style.left = `${targetX}px`;
+                floatingVisualPanel.style.top = `${targetY}px`;
+                floatingVisualPanel.style.opacity = 1;
+                floatingVisualPanel.style.visibility = 'visible';
+                floatingVisualPanel.style.transform = 'translateY(0)';
             });
-        </script>
-        </div>
+
+            // 2. 鼠标离开事件 (隐藏面板)
+            symbol.addEventListener('mouseleave', function() {
+                floatingVisualPanel.style.opacity = 0;
+                floatingVisualPanel.style.visibility = 'hidden';
+                floatingVisualPanel.style.transform = 'translateY(-5px)';
+            });
+
+            // 3. 监听音标块的点击事件 (用于播放音频)
+            symbol.addEventListener('click', function(event) {
+                // 如果点击的是复制按钮，则跳过音频播放
+                if (event.target.classList.contains('copy-button')) {
+                    return;
+                }
+                
+                const fileName = this.getAttribute('data-audio');
+                
+                if (fileName) {
+                    if (currentAudio) {
+                        currentAudio.pause();
+                        currentAudio.currentTime = 0; 
+                    }
+
+                    currentAudio = new Audio(AUDIO_PATH + fileName);
+                    currentAudio.play().catch(error => {
+                        console.error("Audio playback failed:", error);
+                    });
+                }
+            });
+        });
+
+        // --- 复制功能逻辑 ---
+        document.querySelectorAll('.copy-button').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation(); 
+                
+                const symbolElement = this.closest('.ipa-symbol');
+                const ipaText = symbolElement.querySelector('.phoneme').textContent.trim();
+                
+                if (ipaText) {
+                    const tempInput = document.createElement('textarea');
+                    tempInput.value = ipaText;
+                    document.body.appendChild(tempInput);
+                    tempInput.select();
+                    
+                    let originalContent = '📋'; 
+                    
+                    try {
+                        const successful = document.execCommand('copy'); 
+                        if (successful) {
+                            this.innerHTML = '✅';
+                            this.classList.add('copy-success');
+                        } else {
+                            this.innerHTML = '❌';
+                        }
+                    } catch (err) {
+                        this.innerHTML = '❌';
+                        console.error('Failed to copy text: ', err);
+                    }
+                    
+                    document.body.removeChild(tempInput);
+
+                    setTimeout(() => {
+                        this.innerHTML = originalContent;
+                        this.classList.remove('copy-success');
+                    }, 3000);
+                }
+            });
+        });
+
+    </script>
 
 </body>
 </html>
