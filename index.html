@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RP 英语音标表 (Received Pronunciation)</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 30px;
+        }
+
+        h2, h3 {
+            color: #555;
+            padding-bottom: 5px;
+            margin-top: 30px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .ipa-container {
+            max-width: 900px; /* 恢复为单列布局的宽度 */
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .ipa-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        .ipa-symbol {
+            background-color: #e9ecef;
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #dee2e6;
+        }
+
+        .ipa-symbol:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* --- 元音颜色区分 (RP) --- */
+
+        /* 长元音 */
+        .long-vowel { background-color: #d4edda; color: #155724; }
+        /* 短元音 */
+        .short-vowel { background-color: #fcece3; color: #9c5c37; }
+        /* 双元音 */
+        .diphthong { background-color: #fff3cd; color: #856404; }
+        /* 施瓦音 (弱读核心) */
+        .schwa { background-color: #f8d7da; color: #721c24; }
+        
+        /* --- 辅音颜色区分 (清浊分离) --- */
+        
+        /* 清辅音 */
+        .voiceless { background-color: #cce5ff; color: #004085; }
+        /* 浊辅音 */
+        .voiced { background-color: #d1ecf1; color: #0c5460; }
+    </style>
+</head>
+<body>
+
+    <div class="ipa-container">
+
+        <h1>🎙️ RP 英语音标表 (Received Pronunciation)</h1>
+        
+        <h2>单元音 (Monophthongs)</h2>
+        <div class="ipa-group">
+            <div class="ipa-symbol long-vowel">iː</div>
+            <div class="ipa-symbol short-vowel">ɪ</div>
+            <div class="ipa-symbol short-vowel">ɛ</div>
+            <div class="ipa-symbol short-vowel">æ</div>
+            <div class="ipa-symbol long-vowel">ɑː</div>
+            <div class="ipa-symbol short-vowel">ɒ</div>
+            <div class="ipa-symbol long-vowel">ɔː</div>
+            <div class="ipa-symbol short-vowel">ʊ</div>
+            <div class="ipa-symbol long-vowel">uː</div>
+            <div class="ipa-symbol short-vowel">ʌ</div>
+            <div class="ipa-symbol schwa">ə</div>
+            <div class="ipa-symbol long-vowel">ɜː</div>
+        </div>
+        
+        <h2>双元音 (Diphthongs)</h2>
+        <div class="ipa-group">
+            <div class="ipa-symbol diphthong">eɪ</div>
+            <div class="ipa-symbol diphthong">aɪ</div>
+            <div class="ipa-symbol diphthong">ɔɪ</div>
+            <div class="ipa-symbol diphthong">əʊ</div>
+            <div class="ipa-symbol diphthong">aʊ</div>
+            <div class="ipa-symbol diphthong">ɪə</div>
+            <div class="ipa-symbol diphthong">eə</div>
+            <div class="ipa-symbol diphthong">ʊə</div>
+        </div>
+        
+        <hr>
+        
+        <h2>辅音 (Consonants)</h2>
+        
+        <h3>清辅音 (Voiceless Consonants)</h3>
+        <div class="ipa-group">
+            <div class="ipa-symbol voiceless">p</div>
+            <div class="ipa-symbol voiceless">t</div>
+            <div class="ipa-symbol voiceless">k</div>
+            <div class="ipa-symbol voiceless">f</div>
+            <div class="ipa-symbol voiceless">θ</div>
+            <div class="ipa-symbol voiceless">s</div>
+            <div class="ipa-symbol voiceless">ʃ</div>
+            <div class="ipa-symbol voiceless">h</div>
+            <div class="ipa-symbol voiceless">tʃ</div>
+        </div>
+        
+        <h3>浊辅音 (Voiced Consonants)</h3>
+        <div class="ipa-group">
+            <div class="ipa-symbol voiced">b</div>
+            <div class="ipa-symbol voiced">d</div>
+            <div class="ipa-symbol voiced">g</div>
+            <div class="ipa-symbol voiced">v</div>
+            <div class="ipa-symbol voiced">ð</div>
+            <div class="ipa-symbol voiced">z</div>
+            <div class="ipa-symbol voiced">ʒ</div>
+            <div class="ipa-symbol voiced">dʒ</div>
+            <div class="ipa-symbol voiced">m</div>
+            <div class="ipa-symbol voiced">n</div>
+            <div class="ipa-symbol voiced">ŋ</div>
+            <div class="ipa-symbol voiced">l</div>
+            <div class="ipa-symbol voiced">r</div> 
+            <div class="ipa-symbol voiced">w</div>
+            <div class="ipa-symbol voiced">j</div>
+        </div>
+
+    </div>
+
+</body>
+</html>
