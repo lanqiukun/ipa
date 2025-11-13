@@ -27,7 +27,7 @@
         }
 
         .ipa-container {
-            max-width: 900px; /* 恢复为单列布局的宽度 */
+            max-width: 900px;
             margin: 0 auto;
             background: #fff;
             padding: 30px;
@@ -35,6 +35,44 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+        /* 专门用于长短音配对的容器 */
+        .ipa-pair-container {
+            display: flex;
+            flex-wrap: wrap; /* 允许换行 */
+            justify-content: flex-start;
+            gap: 20px; /* 控制大组之间的间隔 */
+            padding: 10px 0;
+        }
+
+        /* 长短音配对组的样式 */
+        .ipa-pair-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px; /* 控制长短音之间的间隔 */
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 100px;
+            flex-grow: 1; /* 允许组占据空间 */
+            max-width: 150px;
+        }
+
+        /* 独立音的容器，保持与其他组一致的外观 */
+        .ipa-independent {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #e0e0e0;
+            padding: 10px;
+            border-radius: 8px;
+            min-width: 100px;
+            flex-grow: 1;
+            max-width: 150px;
+        }
+        
+        /* 双元音和辅音的通用网格布局 */
         .ipa-group {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); 
@@ -42,8 +80,8 @@
             padding: 10px 0;
         }
 
+
         .ipa-symbol {
-            background-color: #e9ecef;
             border-radius: 6px;
             padding: 12px;
             text-align: center;
@@ -52,6 +90,8 @@
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid #dee2e6;
+            width: 100%; /* 确保在容器内占据完整宽度 */
+            box-sizing: border-box; /* 确保 padding 不增加总宽度 */
         }
 
         .ipa-symbol:hover {
@@ -85,31 +125,56 @@
         <h1>🎙️ RP 英语音标表 (Received Pronunciation)</h1>
         
         <h2>单元音 (Monophthongs)</h2>
-        <div class="ipa-group">
-            <div class="ipa-symbol long-vowel">iː</div>
-            <div class="ipa-symbol short-vowel">ɪ</div>
-            <div class="ipa-symbol short-vowel">ɛ</div>
-            <div class="ipa-symbol short-vowel">æ</div>
-            <div class="ipa-symbol long-vowel">ɑː</div>
-            <div class="ipa-symbol short-vowel">ɒ</div>
-            <div class="ipa-symbol long-vowel">ɔː</div>
-            <div class="ipa-symbol short-vowel">ʊ</div>
-            <div class="ipa-symbol long-vowel">uː</div>
-            <div class="ipa-symbol short-vowel">ʌ</div>
-            <div class="ipa-symbol schwa">ə</div>
-            <div class="ipa-symbol long-vowel">ɜː</div>
+        
+        <div class="ipa-pair-container">
+            
+            <div class="ipa-pair-group">
+                <div class="ipa-symbol long-vowel" data-audio="i-long.mp3">iː</div>
+                <div class="ipa-symbol short-vowel" data-audio="i-short.mp3">ɪ</div>
+            </div>
+            
+            <div class="ipa-pair-group">
+                <div class="ipa-symbol long-vowel" data-audio="u-long.mp3">uː</div>
+                <div class="ipa-symbol short-vowel" data-audio="u-short.mp3">ʊ</div>
+            </div>
+            
+            <div class="ipa-pair-group">
+                <div class="ipa-symbol long-vowel" data-audio="a-long.mp3">ɑː</div>
+                <div class="ipa-symbol short-vowel" data-audio="u-short-up.mp3">ʌ</div>
+            </div>
+
+            <div class="ipa-pair-group">
+                <div class="ipa-symbol long-vowel" data-audio="o-long.mp3">ɔː</div>
+                <div class="ipa-symbol short-vowel" data-audio="o-short.mp3">ɒ</div>
+            </div>
+            
+            <div class="ipa-pair-group">
+                <div class="ipa-symbol long-vowel" data-audio="er-long.mp3">ɜː</div>
+                <div class="ipa-symbol schwa" data-audio="schwa.mp3">ə</div>
+            </div>
+            
+            <div class="ipa-independent">
+                <div class="ipa-symbol short-vowel" data-audio="e-short.mp3">ɛ</div>
+            </div>
+
+            <div class="ipa-independent">
+                <div class="ipa-symbol short-vowel" data-audio="a-short.mp3">æ</div>
+            </div>
+
         </div>
+        
+        <hr>
         
         <h2>双元音 (Diphthongs)</h2>
         <div class="ipa-group">
-            <div class="ipa-symbol diphthong">eɪ</div>
-            <div class="ipa-symbol diphthong">aɪ</div>
-            <div class="ipa-symbol diphthong">ɔɪ</div>
-            <div class="ipa-symbol diphthong">əʊ</div>
-            <div class="ipa-symbol diphthong">aʊ</div>
-            <div class="ipa-symbol diphthong">ɪə</div>
-            <div class="ipa-symbol diphthong">eə</div>
-            <div class="ipa-symbol diphthong">ʊə</div>
+            <div class="ipa-symbol diphthong" data-audio="ei.mp3">eɪ</div>
+            <div class="ipa-symbol diphthong" data-audio="ai.mp3">aɪ</div>
+            <div class="ipa-symbol diphthong" data-audio="oi.mp3">ɔɪ</div>
+            <div class="ipa-symbol diphthong" data-audio="ou.mp3">əʊ</div>
+            <div class="ipa-symbol diphthong" data-audio="au.mp3">aʊ</div>
+            <div class="ipa-symbol diphthong" data-audio="ie.mp3">ɪə</div>
+            <div class="ipa-symbol diphthong" data-audio="ea.mp3">eə</div>
+            <div class="ipa-symbol diphthong" data-audio="ue.mp3">ʊə</div>
         </div>
         
         <hr>
@@ -118,37 +183,71 @@
         
         <h3>清辅音 (Voiceless Consonants)</h3>
         <div class="ipa-group">
-            <div class="ipa-symbol voiceless">p</div>
-            <div class="ipa-symbol voiceless">t</div>
-            <div class="ipa-symbol voiceless">k</div>
-            <div class="ipa-symbol voiceless">f</div>
-            <div class="ipa-symbol voiceless">θ</div>
-            <div class="ipa-symbol voiceless">s</div>
-            <div class="ipa-symbol voiceless">ʃ</div>
-            <div class="ipa-symbol voiceless">h</div>
-            <div class="ipa-symbol voiceless">tʃ</div>
+            <div class="ipa-symbol voiceless" data-audio="p.mp3">p</div>
+            <div class="ipa-symbol voiceless" data-audio="t.mp3">t</div>
+            <div class="ipa-symbol voiceless" data-audio="k.mp3">k</div>
+            <div class="ipa-symbol voiceless" data-audio="f.mp3">f</div>
+            <div class="ipa-symbol voiceless" data-audio="theta.mp3">θ</div>
+            <div class="ipa-symbol voiceless" data-audio="s.mp3">s</div>
+            <div class="ipa-symbol voiceless" data-audio="sh.mp3">ʃ</div>
+            <div class="ipa-symbol voiceless" data-audio="h.mp3">h</div>
+            <div class="ipa-symbol voiceless" data-audio="ch.mp3">tʃ</div>
         </div>
         
         <h3>浊辅音 (Voiced Consonants)</h3>
         <div class="ipa-group">
-            <div class="ipa-symbol voiced">b</div>
-            <div class="ipa-symbol voiced">d</div>
-            <div class="ipa-symbol voiced">g</div>
-            <div class="ipa-symbol voiced">v</div>
-            <div class="ipa-symbol voiced">ð</div>
-            <div class="ipa-symbol voiced">z</div>
-            <div class="ipa-symbol voiced">ʒ</div>
-            <div class="ipa-symbol voiced">dʒ</div>
-            <div class="ipa-symbol voiced">m</div>
-            <div class="ipa-symbol voiced">n</div>
-            <div class="ipa-symbol voiced">ŋ</div>
-            <div class="ipa-symbol voiced">l</div>
-            <div class="ipa-symbol voiced">r</div> 
-            <div class="ipa-symbol voiced">w</div>
-            <div class="ipa-symbol voiced">j</div>
+            <div class="ipa-symbol voiced" data-audio="b.mp3">b</div>
+            <div class="ipa-symbol voiced" data-audio="d.mp3">d</div>
+            <div class="ipa-symbol voiced" data-audio="g.mp3">g</div>
+            <div class="ipa-symbol voiced" data-audio="v.mp3">v</div>
+            <div class="ipa-symbol voiced" data-audio="eth.mp3">ð</div>
+            <div class="ipa-symbol voiced" data-audio="z.mp3">z</div>
+            <div class="ipa-symbol voiced" data-audio="zh.mp3">ʒ</div>
+            <div class="ipa-symbol voiced" data-audio="j-affricate.mp3">dʒ</div>
+            <div class="ipa-symbol voiced" data-audio="m.mp3">m</div>
+            <div class="ipa-symbol voiced" data-audio="n.mp3">n</div>
+            <div class="ipa-symbol voiced" data-audio="ng.mp3">ŋ</div>
+            <div class="ipa-symbol voiced" data-audio="l.mp3">l</div>
+            <div class="ipa-symbol voiced" data-audio="r.mp3">r</div> 
+            <div class="ipa-symbol voiced" data-audio="w.mp3">w</div>
+            <div class="ipa-symbol voiced" data-audio="y.mp3">j</div>
         </div>
 
-    </div>
+        <script>
+            // 假设您的MP3文件都放在名为 'audio/' 的文件夹中
+            const AUDIO_PATH = './audio/'; 
+
+            // 获取所有带有 'ipa-symbol' 类的元素
+            const ipaSounds = document.querySelectorAll('.ipa-symbol');
+
+            // 预加载 Audio 对象，以避免点击延迟
+            let currentAudio = null;
+
+            ipaSounds.forEach(symbol => {
+                symbol.addEventListener('click', function() {
+                    // 获取这个音标对应的文件名
+                    const fileName = this.getAttribute('data-audio');
+                    
+                    if (fileName) {
+                        const audioFile = AUDIO_PATH + fileName;
+                        
+                        // 停止任何正在播放的音频 (防止叠加)
+                        if (currentAudio) {
+                            currentAudio.pause();
+                            currentAudio.currentTime = 0; // 重置到开头
+                        }
+
+                        // 创建新的 Audio 对象并播放
+                        currentAudio = new Audio(audioFile);
+                        currentAudio.play().catch(error => {
+                            console.error("Audio playback failed:", error);
+                            // 在控制台提示音频可能未找到
+                        });
+                    }
+                });
+            });
+        </script>
+        </div>
 
 </body>
 </html>
