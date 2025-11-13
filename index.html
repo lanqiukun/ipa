@@ -216,6 +216,38 @@
             opacity: 0.6;
             word-wrap: break-word; 
         }
+
+        /* --- 新增：IPA变化样式 --- */
+        .ipa-group.variation-group {
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* 为变化组设置更宽的列 */
+        }
+
+        .ipa-variation-item {
+            background-color: #e3f2fd; /* Light blue background */
+            color: #1a237e; /* Dark blue text */
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .ipa-variant-symbol {
+            font-size: 38px;
+            min-width: 40px; 
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .ipa-comparison {
+            font-size: 20px;
+            color: #007bff;
+            margin: 0 10px;
+            font-weight: 900;
+        }
+
     </style>
 </head>
 <body>
@@ -287,6 +319,7 @@
                     <span class="example-word">s<span class="phonetic">ir</span></span>
                     <span class="copy-button" title="点击复制音标到剪贴板">📋</span>
                 </div>
+                <!-- 这里的嘴形图和舌位图用的是长音/ə/的图，是合理的替代 -->
                 <div class="ipa-symbol schwa" data-audio="schwa.mp3" data-mouth-image="er-long-m.png" data-tongue-image="er-long-t.png">
                     <span class="phoneme">ə</span>
                     <span class="example-word">th<span class="phonetic">e</span></span>
@@ -495,18 +528,42 @@
             </div>
         </div>
 
-        <h2>IPA音标变化</h2>
-        <div class="ipa-group">
+        <hr>
+        
+        <!-- ==================== IPA音标变化 (Stylized) ==================== -->
+        <h2>国际音标常见变体对照 (IPA Variation)</h2>
+        <div class="ipa-group variation-group">
 
-            <p>ɔ <-> ɒ</p>
+            <div class="ipa-variation-item">
+                <span class="ipa-variant-symbol">ɔ</span>
+                <span class="ipa-comparison">↔</span>
+                <span class="ipa-variant-symbol">ɒ</span>
+            </div>
+            
+            <div class="ipa-variation-item">
+                <span class="ipa-variant-symbol">ɛ</span>
+                <span class="ipa-comparison">↔</span>
+                <span class="ipa-variant-symbol">e</span>
+            </div>
 
-            <p>ɛ <-> e</p>
+            <div class="ipa-variation-item">
+                <span class="ipa-variant-symbol">ə</span>
+                <span class="ipa-comparison">↔</span>
+                <span class="ipa-variant-symbol">ɜ</span>
+            </div>
 
-            <p>ə <-> ɜ</p>
+            <div class="ipa-variation-item">
+                <span class="ipa-variant-symbol">a</span>
+                <span class="ipa-comparison">↔</span>
+                <span class="ipa-variant-symbol">æ</span>
+            </div>
 
-            <p>a <-> æ</p>
-
-            <p>oʊ <-> əʊ</p>
+            <div class="ipa-variation-item">
+                <span class="ipa-variant-symbol">oʊ</span>
+                <span class="ipa-comparison">↔</span>
+                <span class="ipa-variant-symbol">əʊ</span>
+            </div>
+            
         </div>
     </div>
 
@@ -517,12 +574,12 @@
             <!-- 嘴形/发音图容器 -->
             <div class="visual-item" id="visual-item-mouth">
                 <p id="item-1-title">嘴形图</p>
-                <img id="panel-mouth-img" src="" alt="发音图" onerror="this.onerror=null; this.src='https://placehold.co/100x75/555555/FFFFFF?text=Image+N/A'">
+                <img id="panel-mouth-img" src="" alt="发音图" onerror="this.onerror=null; this.src='https://placehold.co/180x135/555555/FFFFFF?text=Mouth+Image+N/A'">
             </div>
             <!-- 舌位图容器 -->
             <div class="visual-item" id="visual-item-tongue">
                 <p id="item-2-title">舌位图</p>
-                <img id="panel-tongue-img" src="" alt="舌位图" onerror="this.onerror=null; this.src='https://placehold.co/100x75/555555/FFFFFF?text=Image+N/A'">
+                <img id="panel-tongue-img" src="" alt="舌位图" onerror="this.onerror=null; this.src='https://placehold.co/180x135/555555/FFFFFF?text=Tongue+Image+N/A'">
             </div>
         </div>
         <p class="image-source-hint">(文件路径提示)</p>
@@ -530,6 +587,7 @@
 
 
     <script>
+        // 设置图片和音频的默认路径。在实际环境中，需要确保这些路径下有对应的文件。
         const AUDIO_PATH = './audio/'; 
         const IMAGE_PATH = './image/'; 
         
@@ -565,9 +623,9 @@
                 // 确定图片模式 (单图或双图)
                 let mode = 'none';
                 if (mouthFileName && tongueFileName) {
-                    mode = 'dual'; // 单元音
+                    mode = 'dual'; // 单元音 (嘴形图 + 舌位图)
                 } else if (singleFileName) {
-                    mode = 'single'; // 双元音和辅音
+                    mode = 'single'; // 双元音和辅音 (发音图)
                 }
 
                 if (mode === 'none') {
@@ -591,25 +649,33 @@
                     visualItemMouth.style.display = 'block';
                     visualItemTongue.style.display = 'block';
                     
-                    // 重置宽度，让 Flex 布局生效
+                    // 移除单图样式，恢复双图布局
                     visualItemMouth.classList.remove('single-image');
+                    
+                    // 调整占位图的尺寸，适配双图布局
+                    panelMouthImg.setAttribute('onerror', "this.onerror=null; this.src='https://placehold.co/180x135/555555/FFFFFF?text=Mouth+Image+N/A'");
+                    panelTongueImg.setAttribute('onerror', "this.onerror=null; this.src='https://placehold.co/180x135/555555/FFFFFF?text=Tongue+Image+N/A'");
+
 
                     imageSourceHint.textContent = `(嘴形: ${mouthFileName} | 舌位: ${tongueFileName})`;
 
                 } else if (mode === 'single') {
                     // **单图模式 (双元音和辅音)**
                     panelMouthImg.src = IMAGE_PATH + singleFileName;
-                    panelTongueImg.src = ''; // 清除第二张图的源，确保它不显示旧图
+                    panelTongueImg.src = ''; // 清除第二张图的源
                     
                     item1Title.textContent = '发音图'; 
                     
                     // 显示第一个容器，并设置样式以适应单图居中
                     visualItemMouth.style.display = 'block';
-                    visualItemMouth.classList.add('single-image'); // 添加一个类来控制单图宽度
+                    visualItemMouth.classList.add('single-image'); 
                     
                     // 隐藏第二个容器
                     visualItemTongue.style.display = 'none'; 
                     
+                    // 调整占位图的尺寸，适配单图布局
+                    panelMouthImg.setAttribute('onerror', "this.onerror=null; this.src='https://placehold.co/200x150/555555/FFFFFF?text=Phoneme+Image+N/A'");
+
                     imageSourceHint.textContent = `(发音图: ${singleFileName})`;
                 }
 
@@ -617,6 +683,10 @@
                 // --- 定位逻辑：显示在音标卡片右侧 ---
                 const rect = this.getBoundingClientRect();
                 
+                // 确保面板已渲染，获取其宽度和高度
+                floatingVisualPanel.style.visibility = 'visible';
+                floatingVisualPanel.style.opacity = 1;
+
                 const panelWidth = floatingVisualPanel.offsetWidth;
                 const panelHeight = floatingVisualPanel.offsetHeight;
                 const margin = 15; 
@@ -666,6 +736,7 @@
                         currentAudio.currentTime = 0; 
                     }
 
+                    // 注意：这里的音频文件路径是相对路径 (./audio/)，在实际部署时需要确保这些文件存在。
                     currentAudio = new Audio(AUDIO_PATH + fileName);
                     currentAudio.play().catch(error => {
                         console.error("Audio playback failed:", error);
@@ -691,6 +762,7 @@
                     let originalContent = '📋'; 
                     
                     try {
+                        // 使用 document.execCommand('copy') 复制文本到剪贴板
                         const successful = document.execCommand('copy'); 
                         if (successful) {
                             this.innerHTML = '✅';
